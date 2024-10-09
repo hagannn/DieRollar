@@ -23,7 +23,6 @@ public class DieRollar {
                 table.put(roll, 1);
             }
         }
-        System.out.println(table);
         // Check if we got a triple, there can only be one set
         for (int key : table.keySet()) {
             if (table.get(key) == 3) {
@@ -45,27 +44,42 @@ public class DieRollar {
         return spaces;
     }
 
+    static int getSum(ArrayList<Integer> rolls) {
+        int sum = 0;
+        for (Integer i : rolls) {
+            sum += i;
+        }
+        return sum;
+    }
+
     static void generateTable(ArrayList<ArrayList<Integer>> rolls ) {
-        int spaces = 5;
-        System.out.println("Roll" + makeSpaces(spaces) + "Die1" + makeSpaces(spaces) + "Die2" + makeSpaces(spaces) + "Die3" + makeSpaces(spaces) + "Sum");
+        int sum = 0;
+        int spaces = 7;
+        System.out.println("Roll" + makeSpaces(4) + "Die1" + makeSpaces(4) + "Die2" + makeSpaces(4) + "Die3" + makeSpaces(4) + "Sum");
         System.out.println("---------------------------------------");
         int i = 1;
         for (ArrayList<Integer> roll : rolls) {
-            System.out.print();
+            System.out.print(i + makeSpaces(spaces));
             for (Integer rollNum : roll) {
                 System.out.print(rollNum + makeSpaces(spaces));
             }
+            System.out.print(getSum(roll));
             System.out.println();
+            i += 1;
         }
     }
 
     public static void main(String[] args) {
         ArrayList<ArrayList<Integer>> rolls = new ArrayList<ArrayList<Integer>>();
 
-        ArrayList<Integer> roll1 = rollDices();
-        rolls.add(rollDices());
-        System.out.println(roll1);
-        boolean result = checkWin(roll1);
+        boolean playing = true;
+
+        while (playing) {
+            ArrayList<Integer> roll = rollDices();
+            rolls.add(roll);
+
+            playing = !checkWin(roll);
+        }
         generateTable(rolls);
     }
 }

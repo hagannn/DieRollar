@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,17 +72,41 @@ public class DieRollar {
         }
     }
 
-    public static void main(String[] args) {
-        ArrayList<ArrayList<Integer>> rolls = new ArrayList<ArrayList<Integer>>();
+    static boolean playAgain() throws IOException {
+        InputStreamReader sr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader(sr);
 
-        boolean playing = true;
+        System.out.print("Would you like to go again? (y/n): ");
+        String inputData = br.readLine();
+        inputData = inputData.toLowerCase();
 
-        while (playing) {
-            ArrayList<Integer> roll = rollDices();
-            rolls.add(roll);
-
-            playing = !checkWin(roll);
+        if (inputData.equals("y")) {
+            return true;
+        } else if (inputData.equals("n")){
+            return false;
+        } else {
+            return playAgain();
         }
-        generateTable(rolls);
+    }
+
+    public static void main(String[] args) throws IOException{
+        boolean playing = true;
+        while (playing) {
+            ArrayList<ArrayList<Integer>> rolls = new ArrayList<ArrayList<Integer>>();
+
+            boolean rolling = true;
+
+            while (rolling) {
+                ArrayList<Integer> roll = rollDices();
+                rolls.add(roll);
+
+                rolling = !checkWin(roll);
+            }
+            generateTable(rolls);
+            playing = playAgain();
+        }
+
+
+
     }
 }
